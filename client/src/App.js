@@ -11,6 +11,7 @@ function App() {
     contract: null,
   });
   const [account, setAccount] = useState("Not connected");
+  const[funds,setfunds]=useState(0);
   
   useEffect(() => {
     async function init() {
@@ -56,11 +57,20 @@ function App() {
       setAccount(selectedAccountAddress);
     }
   };
+  useEffect(()=>{
+    const {contract}=state;
+    async function fundsAvailibity(){
+        const fund=await contract.methods.availableFunds().call();
+        setfunds(fund);
+    }
+    contract && fundsAvailibity();
+
+  },[state]);
   
   return (
     <div className="App">
    <p className="ca">Connected Account:{account}</p>
-   <p className="ca">Available Funds:0 ETH</p>
+   <p className="ca">Available Funds:{funds}</p>
    <form className="label0" id="myForm">
         <label htmlFor="">Choose an account</label>
         <select className="innerBox" id="selectNumber" onChange={selectAccount}>

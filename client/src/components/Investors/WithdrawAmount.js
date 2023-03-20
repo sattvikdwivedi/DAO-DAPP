@@ -1,12 +1,20 @@
 function WithdrawAmount({state,account}){
+   async function withdrawAll() {
+      const {contract}=state;
+      try {
+        await contract.methods.withdrawAllEther().send({ from:account,gas:"1000000" });
+        alert("withdraw successful");
+          window.location.reload();
+      } 
+      catch (error) {
+        alert(error);
+      }
+   }
    
-    return<><form>
-    <label className="label1" htmlFor="amount">
-     Amount to withdraw:
-        </label>
-     <input type="text" id="amount"></input>
-    <button type="submit">Withdraw</button>
-    </form><br></br></>
+    return<>
+ 
+    <button type="submit" onClick={withdrawAll} >Withdraw</button>
+    </>
     
    }
    export default WithdrawAmount;

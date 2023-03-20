@@ -1,8 +1,22 @@
 function TransferShare({state,account}){
+    async function Transferfunc(event) {
+        event.preventDefault();
+        const {contract} = state;
+        const amount = document.querySelector("#amount").value.toString();
+        const to = document.querySelector("#to").value;
+        try {
+          await contract.methods.transferShare(amount,to).send({ from:account,gas:"1000000" });
+          alert("Transfer successful");
+            window.location.reload();
+        } 
+        catch (error) {
+          alert(error);
+        }
+      }
    
-    return<><form >
+    return<><form onSubmit={Transferfunc} >
     <label className="label1" htmlFor="to">
-         Amount: 
+         Amount:
         </label>
     <input type="text" id="to"></input>
     <label className="label1" htmlFor="amount">

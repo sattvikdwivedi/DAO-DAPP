@@ -46,11 +46,11 @@ contract DAO {
   }
 
   function contribution() external payable{//1 wei = 1 share, cost of 1 share = 1 wei;
-     require( paticipationTimeEnd>=block.timestamp,"Contribution Time Ended");
+       require( paticipationTimeEnd>=block.timestamp,"Contribution Time Ended");
      require(msg.value>0,"Investiment amount should be greater than 0");
      isInvestor[msg.sender]=true;
      numOfshares[msg.sender]+=msg.value;
-     totalShares+=msg.value;
+     totalShares+=msg.value;  
      availableFunds+=msg.value;
      investorList.push(msg.sender);
   }
@@ -112,14 +112,10 @@ function disallow(address to) public onlyManager(){
   withdrwalStatus[manager][to]=false;
 }
 
-function withdrawEther(uint amount) public {
+function withdrawAllEther() public { 
   require(withdrwalStatus[manager][msg.sender]==true,"You are not allowed to withdraw");
-  require(numOfshares[msg.sender]>=amount,"Not enought balance to withdraw");
-  numOfshares[msg.sender]-=amount;
-  if(numOfshares[msg.sender]==0){
     isInvestor[msg.sender]=false;
-  }
-  _transfer(amount,payable(msg.sender));
+  _transfer(numOfshares[msg.sender],payable(msg.sender));
 }
 
 function ProposalList() public view returns(Proposal[] memory) {
